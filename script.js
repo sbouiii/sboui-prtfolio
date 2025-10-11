@@ -15,6 +15,7 @@ class Portfolio {
         this.setupFormHandling();
         this.setupTypingEffect();
         this.setupParallaxEffects();
+        this.setupCloudInteractions();
     }
 
     // ===== EVENT LISTENERS =====
@@ -334,6 +335,71 @@ class Portfolio {
                 element.style.transform = `translateY(${rate * speed}px)`;
             });
         });
+    }
+
+    // ===== CLOUD INTERACTIONS =====
+    setupCloudInteractions() {
+        // Network node interactions
+        const networkNodes = document.querySelectorAll('.network-node');
+        networkNodes.forEach(node => {
+            node.addEventListener('mouseenter', () => {
+                node.style.transform = 'scale(1.2) rotate(5deg)';
+                node.style.boxShadow = '0 10px 30px rgba(99, 102, 241, 0.3)';
+            });
+
+            node.addEventListener('mouseleave', () => {
+                node.style.transform = 'scale(1) rotate(0deg)';
+                node.style.boxShadow = 'var(--shadow-medium)';
+            });
+        });
+
+        // Server icon interactions
+        const serverIcons = document.querySelectorAll('.server-icon');
+        serverIcons.forEach(icon => {
+            icon.addEventListener('click', () => {
+                icon.style.animation = 'none';
+                icon.style.transform = 'scale(1.3)';
+                icon.style.background = 'var(--gradient-primary)';
+                icon.style.color = 'white';
+
+                setTimeout(() => {
+                    icon.style.animation = 'serverPulse 3s ease-in-out infinite';
+                    icon.style.transform = 'scale(1)';
+                    icon.style.background = 'rgba(99, 102, 241, 0.1)';
+                    icon.style.color = 'var(--primary-color)';
+                }, 1000);
+            });
+        });
+
+        // Data packet trail effect
+        this.createDataTrail();
+    }
+
+    createDataTrail() {
+        const heroSection = document.querySelector('.hero');
+        if (!heroSection) return;
+
+        setInterval(() => {
+            const dataPacket = document.createElement('div');
+            dataPacket.className = 'data-packet';
+            dataPacket.style.position = 'absolute';
+            dataPacket.style.width = '6px';
+            dataPacket.style.height = '6px';
+            dataPacket.style.background = 'var(--primary-color)';
+            dataPacket.style.borderRadius = '50%';
+            dataPacket.style.left = '0';
+            dataPacket.style.top = Math.random() * 80 + 10 + '%';
+            dataPacket.style.animation = 'dataFlow 6s linear forwards';
+            dataPacket.style.opacity = '0.8';
+
+            heroSection.appendChild(dataPacket);
+
+            setTimeout(() => {
+                if (dataPacket.parentNode) {
+                    dataPacket.parentNode.removeChild(dataPacket);
+                }
+            }, 6000);
+        }, 2000);
     }
 
     // ===== SCROLL HANDLERS =====
